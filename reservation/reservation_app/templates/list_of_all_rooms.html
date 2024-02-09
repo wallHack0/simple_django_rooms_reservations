@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Rooms</title>
+    <link rel="stylesheet" href="{% static 'reservation_app/style.css' %}">
+</head>
+<body>
+    
+    {% include 'menu.html' %}
+
+    <h1>List of Rooms</h1>
+    
+    <!-- Check if there are any rooms to display -->
+    {% if rooms_with_status %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Room</th>
+                    <th>Capacity</th>
+                    <th>Projector</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in rooms_with_status %}
+                <tr>
+                    <td><a href="{% url 'room_detail' item.room.id %}">{{ item.room.name }}</a></td>
+                    <td>{{ item.room.room_capacity }}</td>
+                    <td>{{ item.room.projector_available|yesno:"Yes,No" }}</td>
+                    <td>{{ item.is_occupied|yesno:"Occupied,Available" }}</td>
+                    <td>
+                        <a href="{% url 'room_modify' item.room.id %}">Edit</a> -
+                        <a href="{% url 'room_delete' item.room.id %}" onclick="return confirm('Are you sure?');">Delete</a> -
+                        <a href="{% url 'room_reserve' item.room.id %}">Reserve</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No available rooms.</p>
+    {% endif %}
+
+
+    <h2>Rooms search</h2>
+    
+    <!-- Form for searching rooms. -->
+    <form action="{% url 'search_rooms' %}" method="get">
+    <label for="name">Room Name:</label>
+    <input type="text" id="name" name="name" value="{{ search_name }}">
+
+    <label for="min_capacity">Minimum Capacity:</label>
+    <input type="number" id="min_capacity" name="min_capacity" value="{{ search_min_capacity }}">
+
+    <label for="projector">Projector Required:</label>
+    <input type="checkbox" id="projector" name="projector" {% if search_projector %}checked{% endif %}>
+
+    <input type="submit" value="Search">
+</form>
+    
+    <!-- Form to show all rooms without applying any filter. Sends a GET request to 'list_of_all_rooms' URL. -->
+    <form action="{% url 'list_of_all_rooms' %}" method="get">
+        <input type="submit" value="Show All Rooms">
+    </form>
+    
+    <footer>
+        <p>© 2024, Sebastian Szewczyk</p>
+    </footer>
+
+</body>
+</html>

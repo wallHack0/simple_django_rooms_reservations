@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference rooms reservation</title>
+    <link rel="stylesheet" href="{% static 'reservation_app/style.css' %}">
+</head>
+<body>
+    
+    {% include 'menu.html' %}
+
+    <h1>Conference rooms reservation</h1>
+    
+    <!-- Main sites -->
+    <ul>
+        <li><a href="{% url 'list_of_all_rooms' %}">List of all rooms</a></li>
+        <li><a href="{% url 'add_new_room' %}">Add new room</a></li>
+        <li><a href="{% url 'list_of_reservations' %}">List of reservations</a></li>
+    </ul>
+
+    <footer>
+        <p>© 2024, Sebastian Szewczyk</p>
+    </footer>
+
+</body>
+</html>

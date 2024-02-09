@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modify Room</title>
+    <link rel="stylesheet" href="{% static 'reservation_app/style.css' %}">
+</head>
+<body>
+    
+    {% include 'menu.html' %}
+    
+    <!-- Display messages (errors, success messages, etc.) if there are any -->
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <!-- Apply specific class based on message tags for styling if available -->
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h1>Room to modify:</h1>
+    <div style="background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 600px; margin: 20px auto;">
+        <p> {{ room.name }}</p>
+        <p> Capacity: {{ room.room_capacity }}</p>
+        <p> Projector availability: {{ room.projector_available|yesno:"yes,no" }}</p>
+    </div>
+    
+     <!-- Form for submitting room modifications -->
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="room-name">Room name</label>
+        <input type="text" name="name" id="room-name" value="{{ room.name }}">
+
+        <label for="capacity">Capacity</label>
+        <input type="number" name="room_capacity" id="capacity" value="{{ room.room_capacity }}">
+
+        <label for="projector-available">Projector available</label>
+        <input type="checkbox" name="projector_available" id="projector-available" {{ projector_checked }}>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <footer>
+        <p>© 2024, Sebastian Szewczyk</p>
+    </footer>
+
+</body>
+</html>

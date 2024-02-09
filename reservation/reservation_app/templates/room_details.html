@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Room Details</title>
+    <link rel="stylesheet" href="{% static 'reservation_app/style.css' %}">
+</head>
+<body>
+
+    {% include 'menu.html' %}
+    
+    <!-- Display the name of the room as the main heading and then his capacity and projecto availability -->
+    <h1>{{ room.name }}</h1>
+    <ul>
+        <li>Capacity: {{ room.room_capacity }}</li>
+        <li>Projector: {{ room.projector_available|yesno:"Yes,No" }}</li>
+    </ul>
+    
+    <!-- Section heading for future reservations -->
+    <h2>Future Reservations</h2>
+    <ul>
+        {% for reservation in reservations %}
+            <li>
+                <!-- Display reservation date and comment. Use a default text if no comment is provided -->
+                <span>{{ reservation.date }} - {{ reservation.comment|default:"No comment" }}</span>
+                <a href="{% url 'delete_reservation' reservation.id %}" class="delete-link" onclick="return confirm('Are you sure you want to delete this reservation?');">Delete Reservation</a>
+            </li>
+        {% empty %}
+                <li>No future reservations.</li>
+        {% endfor %}
+    </ul>
+    
+    <!-- Links to edit room details, delete the room, or reserve the room. Each action has a confirmation dialog where applicable -->
+    <a href="{% url 'room_modify' room.id %}" class="action-link">Edit Room</a> |
+    <a href="{% url 'room_delete' room.id %}" class="action-link" onclick="return confirm('Are you sure?');">Delete Room</a> |
+    <a href="{% url 'room_reserve' room.id %}" class="action-link">Reserve Room</a>
+
+    <footer>
+        <p>© 2024, Sebastian Szewczyk</p>
+    </footer>
+
+</body>
+</html>

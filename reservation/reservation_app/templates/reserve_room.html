@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reserve Room</title>
+    <link rel="stylesheet" href="{% static 'reservation_app/style.css' %}">
+</head>
+<body>
+    
+    {% include 'menu.html' %}
+    
+    <!-- Checking if there are any messages to display -->
+    {% if messages %}
+        {% for message in messages %}
+            <!-- Displaying each message with appropriate CSS classes -->
+            <div class="{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+    <h1>Reserve Room</h1>
+    
+    <!-- Form for reserving a room -->
+    <form method="POST">
+        {% csrf_token %}
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" required>
+        
+        <label for="comment">Comment:</label>
+        <textarea name="comment" id="comment"></textarea>
+        
+        <button type="submit">Reserve</button>
+    </form>
+    
+    <h2>Existing Reservations</h2>
+    <!-- Checking if there are any reservations to display -->
+    {% if reservations %}
+        <ul>
+            {% for reservation in reservations %}
+                <li>{{ reservation.date }} - Comment: {{ reservation.comment|default:"No comment" }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reservations for this room.</p>
+    {% endif %}
+
+    <footer>
+        <p>© 2024, Sebastian Szewczyk</p>
+    </footer>
+
+</body>
+</html>

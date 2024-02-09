@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adding New Room</title>
+    <link rel="stylesheet" href="{% static 'reservation_app/style.css' %}">
+</head>
+<body>
+    
+    {% include 'menu.html' %}
+
+    <!-- Display feedback messages from server-side processing (e.g., errors, success messages) -->
+    {% if messages %}
+        {% for message in messages %}
+            <!-- Dynamically apply class for styling based on the message type (e.g., error, success) -->
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+    <!-- Form for submitting new room data -->
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="room-name">Room name</label>
+        <input type="text" name="name" id="room-name">
+
+        <label for="capacity">Capacity</label>
+        <input type="number" name="room_capacity" id="capacity">
+
+        <label for="projector-available">Projector available</label>
+        <input type="checkbox" name="projector_available" id="projector-available" style="margin-bottom: 40px;">
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <footer>
+        <p>© 2024, Sebastian Szewczyk</p>
+    </footer>
+
+</body>
+</html>
